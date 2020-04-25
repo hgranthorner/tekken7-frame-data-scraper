@@ -1,9 +1,8 @@
 ﻿open System
 open System.IO
 open System.Net.Http
-open ScrapeFrameData.Models
-
-let divider = "<div id=\"basic\"></div>\n<h3>Basic Moves</h3>"
+open Scrape.Core
+open ScrapeFrameData
 
 let getCharacterData charName =
     let client = new HttpClient()
@@ -16,65 +15,27 @@ let getCharacterData charName =
     }
     |> Async.RunSynchronously
 
-let extractTableStrings: ExtractTableStrings =
-    fun str ->
-        String.substringFromPatterns "<table>" "</table>" str
-        |> String.split divider
-        |> List.map TableString
-
-let getBody (TableString x) =
-    String.substringFromPatterns "<tbody>" "</tbody>" x
-    |> String.replace "<tbody>" ""
-
-let extractRowStrings: ExtractRowStrings =
-    fun tableS ->
-        getBody tableS
-        |> String.split "</tr>"
-        |> Seq.map (String.replace "<tr>" "")
-        |> Seq.map (String.replace "\n" "")
-        |> Seq.removeLast
-        |> Seq.map RowString
-        |> Seq.toList
-
-let parseRow: ParseRow =
-    fun (RowString str) ->
-        let vals =
-            String.split "</td>" str
-            |> Seq.map (String.replace "<td>" "")
-            |> Seq.map (String.replace "\n" "")
-            |> Seq.removeLast
-            |> Seq.toList
-
-        match List.length vals with
-        | 8 ->
-            { Command = vals.[0]
-              HitLevel = vals.[1]
-              Damage = vals.[2]
-              StartUpFrame = vals.[3]
-              BlockFrame = vals.[4]
-              HitFrame = vals.[5]
-              CounterHitFrame = vals.[6]
-              Notes = vals.[7] }
-        | _ ->
-            let message = sprintf "Failed to process data: %s" <| String.concat "|" vals
-            failwith message
-
-let combineRows: CombineRows = fun rows -> Table rows
-
-let parseTable: ParseTable =
-    fun table ->
-        table
-        |> extractRowStrings
-        |> List.map parseRow
-        |> combineRows
-
 [<EntryPoint>]
 let main argv =
-    let path = "/Users/grant/Dev/fsharp/ScrapeFrameData/data.txt"
-    let stream = File.Create path
-    stream.Close()
-    getCharacterData "ganryu"
-    |> extractTableStrings
-    |> List.map parseTable
-    |> fun x -> File.AppendAllText(path, x.ToString())
+    
+    let characterNames = [| "ganryu"; "dragunov"; "shaheen"; "claudio" |]
+    let path = if Array.length argv <> 1
+               then failwith "Please pass path for db."//"/Users/grant/Dev/fsharp/ScrapeFrameData/data.txt"
+               else argv.[0]
+    do if File.Exists path then
+        ()
+       else
+           File.Create path
+           |> fun x -> x.Close()
+           |> ignore
+
+    let cnxn = Db.createDb
+    Array.iter (fun characterName ->
+        getCharacterData characterName
+        |> Transform.extractTableStrings
+        |> List.map Transform.parseTable
+        |> List.map (Db.loadData characterName cnxn)
+        |> fun _ -> sprintf "Finished downloading data for %s." characterName |> Console.WriteLine) characterNames
+    //    |> fun x -> File.AppendAllText(path, x.ToString())
+
     0 // return an integer exit code

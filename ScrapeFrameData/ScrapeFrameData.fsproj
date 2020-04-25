@@ -6,10 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Models.fs" />
-        <Compile Include="StringExtensions.fs" />
-        <Compile Include="SeqExtensions.fs" />
+        <Compile Include="Db.fs" />
         <Compile Include="Program.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Scrape.Core\Scrape.Core.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.35" />
+      <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
     </ItemGroup>
 
 </Project>

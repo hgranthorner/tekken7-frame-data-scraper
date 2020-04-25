@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Models.fs" />
+        <Compile Include="StringExtensions.fs" />
+        <Compile Include="SeqExtensions.fs" />
+        <Compile Include="Transform.fs" />
+    </ItemGroup>
+
+</Project>

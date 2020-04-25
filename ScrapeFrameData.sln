@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ScrapeFrameData", "ScrapeFrameData\ScrapeFrameData.fsproj", "{51D54659-531E-49EA-AEDC-049FCAC86153}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Core", "Scrape.Core\Scrape.Core.fsproj", "{9854F67F-D9EF-44F5-9D98-2E5B69107380}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{51D54659-531E-49EA-AEDC-049FCAC86153}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D54659-531E-49EA-AEDC-049FCAC86153}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D54659-531E-49EA-AEDC-049FCAC86153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
