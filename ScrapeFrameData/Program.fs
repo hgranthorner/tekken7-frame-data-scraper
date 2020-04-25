@@ -24,6 +24,7 @@ let extractTableStrings: ExtractTableStrings =
 
 let getBody (TableString x) =
     String.substringFromPatterns "<tbody>" "</tbody>" x
+    |> String.replace "<tbody>" ""
 
 let extractRowStrings: ExtractRowStrings =
     fun tableS ->
@@ -72,12 +73,8 @@ let main argv =
     let path = "/Users/grant/Dev/fsharp/ScrapeFrameData/data.txt"
     let stream = File.Create path
     stream.Close()
-    getCharacterData "dragunov"
+    getCharacterData "ganryu"
     |> extractTableStrings
     |> List.map parseTable
     |> fun x -> File.AppendAllText(path, x.ToString())
-
-    //    match List.tryHead tables with
-    //    | Some table -> Console.WriteLine table
-    //    | None -> Console.WriteLine "No data"
     0 // return an integer exit code

@@ -17,7 +17,7 @@ let substring startIndex length (str: string) =
 
 let substringFromPatterns (startPattern: string) (endPattern: string) (str: string) =
     let startIndex = str.IndexOf startPattern
-    let endIndex = str.LastIndexOf endPattern
+    let endIndex = str.IndexOf endPattern
     let lengthOfPattern = String.length endPattern
     str.Substring(startIndex, endIndex - startIndex + lengthOfPattern)
     
