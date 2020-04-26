@@ -30,27 +30,26 @@ let extractRowStrings: ExtractRowStrings =
 
 let parseRow: ParseRow =
     fun (RowString str) ->
-        let vals =
-            String.split "</td>" str
-            |> Seq.map (String.replace "<td>" "")
-            |> Seq.map (String.replace "\n" "")
-            |> Seq.removeLast
-            |> Seq.toList
-
-        match List.length vals with
-        | 8 ->
-            Row
-                {| Command = vals.[0]
-                   HitLevel = vals.[1]
-                   Damage = vals.[2]
-                   StartUpFrame = vals.[3]
-                   BlockFrame = vals.[4]
-                   HitFrame = vals.[5]
-                   CounterHitFrame = vals.[6]
-                   Notes = vals.[7] |}
-        | _ ->
-            let message = sprintf "Failed to process data: %s" <| String.concat "|" vals
-            failwith message
+        String.split "</td>" str
+        |> Seq.map (String.replace "<td>" "")
+        |> Seq.map (String.replace "\n" "")
+        |> Seq.removeLast
+        |> Seq.toList
+        |> fun xs ->
+            match List.length xs with
+            | 8 ->
+                Row
+                    {| Command = xs.[0]
+                       HitLevel = xs.[1]
+                       Damage = xs.[2]
+                       StartUpFrame = xs.[3]
+                       BlockFrame = xs.[4]
+                       HitFrame = xs.[5]
+                       CounterHitFrame = xs.[6]
+                       Notes = xs.[7] |}
+            | _ ->
+                let message = sprintf "Failed to process data: %s" <| String.concat "|" xs
+                failwith message
 
 let combineRows: CombineRows = fun rows -> Table rows
 
@@ -82,7 +81,8 @@ let damageToTotalDamage (DbRow row): DbRow =
 let maxMatch (coll: MatchCollection) =
     query {
         for m in coll do
-            maxByNullable (m.Value
+            maxByNullable
+                (m.Value
                  |> maybeParseInt
                  |> Option.toNullable)
     }
@@ -91,7 +91,8 @@ let maxMatch (coll: MatchCollection) =
 let minMatch (coll: MatchCollection) =
     query {
         for m in coll do
-            minByNullable (m.Value
+            minByNullable
+                (m.Value
                  |> maybeParseInt
                  |> Option.toNullable)
     }
@@ -102,18 +103,20 @@ type MinimumValue =
     | Any
 
 let parseEarliestAndLatestFrames (FrameString frame) (minimumValue: MinimumValue) =
-    let pattern = match minimumValue with
-                  | Ten -> "(-*[0-9]{2})"
-                  | Any -> "(-*[0-9]+)"
+    let pattern =
+        match minimumValue with
+        | Ten -> "(-*[0-9]{2})"
+        | Any -> "(-*[0-9]+)"
+
     let collection = Regex.Matches(frame, pattern)
     match collection.Count with
     | 0 -> (Some 0, Some 0)
     | _ -> (minMatch collection, maxMatch collection)
 
 let getEarliestAndLatestFrames (DbRow row): DbRow =
-    let (eStartup, lStartup) = parseEarliestAndLatestFrames row.StartUpFrame MinimumValue.Ten 
-    let (eHit, lHit)         = parseEarliestAndLatestFrames row.HitFrame MinimumValue.Any
-    let (eBlock, lBlock)     = parseEarliestAndLatestFrames row.BlockFrame MinimumValue.Any
+    let (eStartup, lStartup) = parseEarliestAndLatestFrames row.StartUpFrame MinimumValue.Ten
+    let (eHit, lHit) = parseEarliestAndLatestFrames row.HitFrame MinimumValue.Any
+    let (eBlock, lBlock) = parseEarliestAndLatestFrames row.BlockFrame MinimumValue.Any
     let (eCounter, lCounter) = parseEarliestAndLatestFrames row.CounterHitFrame MinimumValue.Any
     DbRow
         {| row with
@@ -123,5 +126,5 @@ let getEarliestAndLatestFrames (DbRow row): DbRow =
                LatestBlockFrame = lBlock
                EarliestHitFrame = eHit
                LatestHitFrame = lHit
-               EarliestCounterHitFrame = eCounter 
+               EarliestCounterHitFrame = eCounter
                LatestCounterHitFrame = lCounter |}
