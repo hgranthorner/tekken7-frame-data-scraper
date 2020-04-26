@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Scrape.Core\Scrape.Core.fsproj" />
-      <ProjectReference Include="..\ScrapeFrameData\ScrapeFrameData.fsproj" />
+      <ProjectReference Include="..\Scrape.CreateDb\Scrape.CreateDb.fsproj" />
     </ItemGroup>
 
 </Project>

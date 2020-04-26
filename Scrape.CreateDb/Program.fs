@@ -1,9 +1,8 @@
 ﻿open System
-open System.IO
 open System.Net
 open System.Net.Http
 open Scrape.Core
-open ScrapeFrameData
+open Scrape.CreateDb
 
 let getCharacterData charName =
     let client = new HttpClient()

@@ -1,6 +1,6 @@
 namespace Tests
 
-open ScrapeFrameData
+open Scrape.CreateDb
 open Xunit
 
 module Db =

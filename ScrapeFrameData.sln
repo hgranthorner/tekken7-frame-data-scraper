@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ScrapeFrameData", "ScrapeFrameData\ScrapeFrameData.fsproj", "{51D54659-531E-49EA-AEDC-049FCAC86153}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.CreateDb", "Scrape.CreateDb\Scrape.CreateDb.fsproj", "{51D54659-531E-49EA-AEDC-049FCAC86153}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Core", "Scrape.Core\Scrape.Core.fsproj", "{9854F67F-D9EF-44F5-9D98-2E5B69107380}"
 EndProject

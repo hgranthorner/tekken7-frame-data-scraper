@@ -1,4 +1,4 @@
-module ScrapeFrameData.Db
+module Scrape.CreateDb.Db
 
 open System.Collections.Specialized
 open System.Data.SQLite
