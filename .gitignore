@@ -2,4 +2,8 @@ bin/
 obj/
 /packages/
 riderModule.iml
-/_ReSharper.Caches/
+/_ReSharper.Caches/data.db
+data.txt
+data.db
+test.db
+ScrapeFrameData/sqlite-interop-dll

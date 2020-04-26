@@ -53,3 +53,12 @@ let parseTable: ParseTable =
         |> extractRowStrings
         |> List.map parseRow
         |> combineRows
+        
+let damageToTotalDamage (dbRow: DbRow) =
+    {| Id = dbRow.Id
+       TotalDamage = dbRow.Damage
+                     |> String.removePattern "("
+                     |> String.removePattern ")"
+                     |> String.removePattern "~"
+                     |> String.removePattern "?"
+      |}

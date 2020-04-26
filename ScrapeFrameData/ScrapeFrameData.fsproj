@@ -8,6 +8,9 @@
     <ItemGroup>
         <Compile Include="Db.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="sqlite-interop-dll\SQLite.Interop.dll" />
+        <Content Include="sqlite-interop-dll\libSQLite.Interop.dylib" />
+        <Content Include="sqlite-interop-dll\System.Data.SqlClient.dll" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,5 +1,7 @@
 module String
 
+open System
+
 let indexOf (patternToFind: string) (str: string) =
     str.IndexOf patternToFind
     
@@ -23,3 +25,14 @@ let substringFromPatterns (startPattern: string) (endPattern: string) (str: stri
     
 let replace (oldValue: string) (newValue: string) (str: string) =
     str.Replace(oldValue, newValue)
+    
+let removePattern pattern (str: string) =
+    str.Replace(pattern, "")
+    
+let rec removeTrailingChar (charToFind: Char) (str: string) =
+    if str.Length = 0
+    then ""
+    else let lastChar = str.[str.Length - 1]
+         if lastChar = charToFind
+         then removeTrailingChar charToFind str.[..str.Length - 2]
+         else str
