@@ -26,7 +26,15 @@ type DbRow = DbRow of {| Id: string
                          BlockFrame: string
                          HitFrame: string
                          CounterHitFrame: string
-                         Notes: string |}
+                         Notes: string
+                         EarliestStartUpFrame: int option
+                         LatestStartUpFrame: int option
+                         EarliestBlockFrame: int option
+                         LatestBlockFrame: int option
+                         EarliestHitFrame: int option
+                         LatestHitFrame: int option
+                         EarliestCounterHitFrame: int option
+                         LatestCounterHitFrame: int option |}
 
 type Table = Table of Row list
 
