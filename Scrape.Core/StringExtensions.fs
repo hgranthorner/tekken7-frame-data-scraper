@@ -40,3 +40,5 @@ let rec removeTrailingChar (charToFind: Char) (str: string) =
             else removeTrailingChar charToFind str.[..str.Length - 2]
         else
             str
+
+let isNullOrEmpty = String.IsNullOrEmpty

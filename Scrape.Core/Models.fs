@@ -16,16 +16,18 @@ type Row =
               CounterHitFrame: string
               Notes: string |}
 
+type FrameString = FrameString of string
+
 type DbRow = DbRow of {| Id: string
                          CharacterName: string
                          Command: string
                          HitLevel: string
                          Damage: string
                          TotalDamage: int option
-                         StartUpFrame: string
-                         BlockFrame: string
-                         HitFrame: string
-                         CounterHitFrame: string
+                         StartUpFrame: FrameString
+                         BlockFrame: FrameString
+                         HitFrame: FrameString
+                         CounterHitFrame: FrameString
                          Notes: string
                          EarliestStartUpFrame: int option
                          LatestStartUpFrame: int option

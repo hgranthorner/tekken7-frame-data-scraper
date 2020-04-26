@@ -2,6 +2,7 @@ module ScrapeFrameData.Db
 
 open System.Collections.Specialized
 open System.Data.SQLite
+open Scrape.Core
 open ScrapeFrameData.Models
 
 #if DEBUG
@@ -79,33 +80,27 @@ let executeQuery (cnxn: SQLiteConnection) (command: SQLiteCommand) =
     cnxn.Close()
     lst
 
-let maybeParseInt str =
-    try
-        Some(int str)
-    with _ -> None
-
-
 let collectionToRow (collection: NameValueCollection): DbRow =
     DbRow
         {| CharacterName = collection.Get "CharacterName"
            Id = collection.Get "Id"
            Command = collection.Get "Command"
-           TotalDamage = collection.Get "TotalDamage" |> maybeParseInt
+           TotalDamage = collection.Get "TotalDamage" |> Transform.maybeParseInt
            HitLevel = collection.Get "HitLevel"
            Damage = collection.Get "Damage"
-           StartUpFrame = collection.Get "StartUpFrame"
-           BlockFrame = collection.Get "BlockFrame"
-           HitFrame = collection.Get "HitFrame"
-           CounterHitFrame = collection.Get "CounterHitFrame"
+           StartUpFrame = collection.Get "StartUpFrame" |> FrameString
+           BlockFrame = collection.Get "BlockFrame" |> FrameString
+           HitFrame = collection.Get "HitFrame" |> FrameString
+           CounterHitFrame = collection.Get "CounterHitFrame" |> FrameString
            Notes = collection.Get "Notes"
-           EarliestStartUpFrame = collection.Get "EarliestStartUpFrame" |> maybeParseInt
-           LatestStartUpFrame = collection.Get "LatestStartUpFrame" |> maybeParseInt
-           EarliestBlockFrame = collection.Get "EarliestBlockFrame" |> maybeParseInt
-           LatestBlockFrame = collection.Get "LatestBlockFrame" |> maybeParseInt
-           EarliestHitFrame = collection.Get "EarliestHitFrame" |> maybeParseInt
-           LatestHitFrame = collection.Get "LatestHitFrame" |> maybeParseInt
-           EarliestCounterHitFrame = collection.Get "EarliestCounterHitFrame" |> maybeParseInt
-           LatestCounterHitFrame = collection.Get "LatestCounterHitFrame" |> maybeParseInt |}
+           EarliestStartUpFrame = collection.Get "EarliestStartUpFrame" |> Transform.maybeParseInt
+           LatestStartUpFrame = collection.Get "LatestStartUpFrame" |> Transform.maybeParseInt
+           EarliestBlockFrame = collection.Get "EarliestBlockFrame" |> Transform.maybeParseInt
+           LatestBlockFrame = collection.Get "LatestBlockFrame" |> Transform.maybeParseInt
+           EarliestHitFrame = collection.Get "EarliestHitFrame" |> Transform.maybeParseInt
+           LatestHitFrame = collection.Get "LatestHitFrame" |> Transform.maybeParseInt
+           EarliestCounterHitFrame = collection.Get "EarliestCounterHitFrame" |> Transform.maybeParseInt
+           LatestCounterHitFrame = collection.Get "LatestCounterHitFrame" |> Transform.maybeParseInt |}
 
 
 let getMoves (cnxn: SQLiteConnection) =
@@ -129,17 +124,3 @@ let insertData characterName (cnxn: SQLiteConnection) (Table xs) =
         command)
     |> List.iter (fun (x: SQLiteCommand) -> x.ExecuteNonQuery() |> ignore)
     cnxn.Close()
-
-let moves (cnxn: SQLiteConnection): DbRow seq =
-    cnxn.Open()
-    let sql = """
-    select *
-    from moves
-    """
-    //let x = () //cnxn.Query<DbRow>(sql)
-    cnxn.Close()
-    Seq.empty<DbRow>
-
-//let updateTotalDamage cnxn =
-//    moves cnxn
-//    |> Seq.map

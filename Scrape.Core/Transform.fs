@@ -1,6 +1,12 @@
 ﻿module Scrape.Core.Transform
 
+open System.Text.RegularExpressions
 open ScrapeFrameData.Models
+
+let maybeParseInt (str: string) =
+    try
+        Some(int str)
+    with _ -> None
 
 let extractTableStrings: ExtractTableStrings =
     fun str ->
@@ -33,7 +39,8 @@ let parseRow: ParseRow =
 
         match List.length vals with
         | 8 ->
-            Row {| Command = vals.[0]
+            Row
+                {| Command = vals.[0]
                    HitLevel = vals.[1]
                    Damage = vals.[2]
                    StartUpFrame = vals.[3]
@@ -53,12 +60,75 @@ let parseTable: ParseTable =
         |> extractRowStrings
         |> List.map parseRow
         |> combineRows
-        
-let damageToTotalDamage (DbRow dbRow) =
-    {| Id = dbRow.Id
-       TotalDamage = dbRow.Damage
-                     |> String.removePattern "("
-                     |> String.removePattern ")"
-                     |> String.removePattern "~"
-                     |> String.removePattern "?"
-      |}
+
+let damageToTotalDamage (DbRow row): DbRow =
+    DbRow
+        {| row with
+               TotalDamage =
+                   if String.isNullOrEmpty row.Damage then "0" else row.Damage
+                   |> String.removePattern "("
+                   |> String.removePattern ")"
+                   |> String.removePattern "~"
+                   |> String.removePattern "?"
+                   |> String.removeTrailingChar ','
+                   |> String.split ","
+                   |> Seq.map maybeParseInt
+                   |> Seq.map (function
+                       | Some (x) -> x
+                       | None -> 0)
+                   |> Seq.fold (+) 0
+                   |> Some |}
+
+// Range Regex: ([0-9]+)~([0-9]+)
+// Options:
+// 1. No numbers - 0, 0
+// 2. Single number n - n, n
+// 3. Two numbers a, b - a, b
+// Probs want Regex.Match
+
+let maxMatch (coll: MatchCollection) =
+    query {
+        for m in coll do
+            maxByNullable (m.Value
+                 |> maybeParseInt
+                 |> Option.toNullable)
+    }
+    |> Option.ofNullable
+
+let minMatch (coll: MatchCollection) =
+    query {
+        for m in coll do
+            minByNullable (m.Value
+                 |> maybeParseInt
+                 |> Option.toNullable)
+    }
+    |> Option.ofNullable
+
+type MinimumValue =
+    | Ten
+    | Any
+
+let parseEarliestAndLatestFrames (FrameString frame) (minimumValue: MinimumValue) =
+    let pattern = match minimumValue with
+                  | Ten -> "(-*[0-9]{2})"
+                  | Any -> "(-*[0-9]+)"
+    let collection = Regex.Matches(frame, pattern)
+    match collection.Count with
+    | 0 -> (Some 0, Some 0)
+    | _ -> (minMatch collection, maxMatch collection)
+
+let getEarliestAndLatestFrames (DbRow row): DbRow =
+    let (eStartup, lStartup) = parseEarliestAndLatestFrames row.StartUpFrame MinimumValue.Ten 
+    let (eHit, lHit) = parseEarliestAndLatestFrames row.HitFrame MinimumValue.Any
+    let (eBlock, lBlock) = parseEarliestAndLatestFrames row.BlockFrame MinimumValue.Any
+    let (eCounter, lCounter) = parseEarliestAndLatestFrames row.CounterHitFrame MinimumValue.Any
+    DbRow
+        {| row with
+               EarliestStartUpFrame = eStartup
+               LatestStartUpFrame = lStartup
+               EarliestBlockFrame = eBlock
+               LatestBlockFrame = lBlock
+               EarliestHitFrame = eHit
+               LatestHitFrame = lHit
+               EarliestCounterHitFrame = eCounter 
+               LatestCounterHitFrame = lCounter |}
