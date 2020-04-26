@@ -28,7 +28,7 @@ let getCharacterData charName =
     else data
 
 
-let createDb = fun () ->
+let createDb () =
     let characterNames = [| "ganryu"; "dragunov"; "shaheen"; "claudio"; "yoshimitsu" |]
     let cnxn = Db.createDb()
     Array.iter (fun characterName ->

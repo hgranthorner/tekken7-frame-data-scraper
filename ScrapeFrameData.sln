@@ -4,7 +4,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ScrapeFrameData", "ScrapeFr
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Core", "Scrape.Core\Scrape.Core.fsproj", "{9854F67F-D9EF-44F5-9D98-2E5B69107380}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Tests", "Scrape.Tests\Scrape.Tests.fsproj", "{EAE564F9-F7FC-480E-878D-D1A1C0717892}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Tests", "Scrape.Tests\Scrape.Tests.fsproj", "{AB09F69B-DA3A-4532-8388-201E52D6C2E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +20,9 @@ Global
 		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9854F67F-D9EF-44F5-9D98-2E5B69107380}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAE564F9-F7FC-480E-878D-D1A1C0717892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAE564F9-F7FC-480E-878D-D1A1C0717892}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAE564F9-F7FC-480E-878D-D1A1C0717892}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAE564F9-F7FC-480E-878D-D1A1C0717892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

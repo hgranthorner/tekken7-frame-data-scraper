@@ -33,14 +33,14 @@ let parseRow: ParseRow =
 
         match List.length vals with
         | 8 ->
-            { Command = vals.[0]
-              HitLevel = vals.[1]
-              Damage = vals.[2]
-              StartUpFrame = vals.[3]
-              BlockFrame = vals.[4]
-              HitFrame = vals.[5]
-              CounterHitFrame = vals.[6]
-              Notes = vals.[7] }
+            Row {| Command = vals.[0]
+                   HitLevel = vals.[1]
+                   Damage = vals.[2]
+                   StartUpFrame = vals.[3]
+                   BlockFrame = vals.[4]
+                   HitFrame = vals.[5]
+                   CounterHitFrame = vals.[6]
+                   Notes = vals.[7] |}
         | _ ->
             let message = sprintf "Failed to process data: %s" <| String.concat "|" vals
             failwith message
@@ -54,7 +54,7 @@ let parseTable: ParseTable =
         |> List.map parseRow
         |> combineRows
         
-let damageToTotalDamage (dbRow: DbRow) =
+let damageToTotalDamage (DbRow dbRow) =
     {| Id = dbRow.Id
        TotalDamage = dbRow.Damage
                      |> String.removePattern "("

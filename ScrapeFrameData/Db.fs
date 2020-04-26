@@ -1,7 +1,7 @@
 module ScrapeFrameData.Db
 
+open System.Collections.Specialized
 open System.Data.SQLite
-open Dapper
 open ScrapeFrameData.Models
 
 #if DEBUG
@@ -33,7 +33,7 @@ let createDb = fun () ->
     Command TEXT,
     HitLevel TEXT,
     Damage TEXT,
-    TotalDamage INTEGER,
+    TotalDamage INTEGER DEFAULT 0,
     StartUpFrame TEXT,
     BlockFrame TEXT,
     HitFrame TEXT,
@@ -58,15 +58,56 @@ let createDb = fun () ->
     connection.Close()
     connection
 
+
+let executeQuery (cnxn: SQLiteConnection) (command: SQLiteCommand) =
+    cnxn.Open()
+    let x = command.ExecuteReader()
+    let mutable lst = list.Empty
+    while x.HasRows do
+        lst <- List.append lst [x.GetValues()]
+        x.Read() |> ignore
+    cnxn.Close()
+    lst
+    
+let maybeParseInt str =
+    try Some (int str) with
+    | _ -> None
+    
+    
+let collectionToRow (collection: NameValueCollection): DbRow =
+        DbRow  {| CharacterName = collection.Get "CharacterName"
+                  Id = collection.Get "Id"
+                  Command = collection.Get "Command"
+                  TotalDamage =  collection.Get "TotalDamage" |> maybeParseInt
+                  HitLevel = collection.Get "HitLevel"
+                  Damage = collection.Get "Damage"
+                  StartUpFrame = collection.Get "StartUpFrame"
+                  BlockFrame = collection.Get "BlockFrame"
+                  HitFrame = collection.Get "HitFrame"
+                  CounterHitFrame = collection.Get "CounterHitFrame"
+                  Notes = collection.Get "Notes" |}
+
+    
+let getMoves (cnxn: SQLiteConnection) =
+    let command = cnxn.CreateCommand()
+    command.CommandText <- "select * from moves"
+    executeQuery cnxn command
+    |> Seq.map collectionToRow
+
+let buildSql (Row row) charName =
+    sprintf """
+    insert into Moves (CharacterName,Command,HitLevel,Damage,StartUpFrame,BlockFrame,HitFrame,CounterHitFrame,Notes)
+    values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')
+    """ charName row.Command row.HitLevel row.Damage row.StartUpFrame row.BlockFrame row.HitFrame row.CounterHitFrame row.Notes
+    
 let insertData characterName (cnxn: SQLiteConnection) (Table xs) =
     cnxn.Open()
-    let sql = """
-    insert into Moves (CharacterName,Command,HitLevel,Damage,StartUpFrame,BlockFrame,HitFrame,CounterHitFrame,Notes)
-    values (@CharacterName,@Command,@HitLevel,@Damage,@StartUpFrame,@BlockFrame,@HitFrame,@CounterHitFrame,@Notes)
-    """
     xs
-    |> Seq.map (fun x -> {| x with CharacterName = characterName |})
-    |> Seq.iter (fun x -> cnxn.Execute(sql, x) |> ignore)
+    |> List.map (fun x ->
+        let command = cnxn.CreateCommand()
+        command.CommandText <- buildSql x characterName
+        command)
+    |> List.iter (fun (x: SQLiteCommand) -> x.ExecuteNonQuery() |> ignore)
     cnxn.Close()
 
 let moves (cnxn: SQLiteConnection): DbRow seq =
@@ -75,9 +116,9 @@ let moves (cnxn: SQLiteConnection): DbRow seq =
     select *
     from moves
     """
-    let x = cnxn.Query<DbRow> sql
+    //let x = () //cnxn.Query<DbRow>(sql)
     cnxn.Close()
-    x
+    Seq.empty<DbRow>
     
 //let updateTotalDamage cnxn =
 //    moves cnxn

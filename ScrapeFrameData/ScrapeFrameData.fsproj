@@ -8,9 +8,6 @@
     <ItemGroup>
         <Compile Include="Db.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="sqlite-interop-dll\SQLite.Interop.dll" />
-        <Content Include="sqlite-interop-dll\libSQLite.Interop.dylib" />
-        <Content Include="sqlite-interop-dll\System.Data.SqlClient.dll" />
     </ItemGroup>
 
     <ItemGroup>
@@ -18,8 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Dapper" Version="2.0.35" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
+      <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
 
 </Project>

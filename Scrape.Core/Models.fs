@@ -7,25 +7,26 @@ type TableString = TableString of string
 type RowString = RowString of string
 
 type Row =
-    { Command: string
-      HitLevel: string
-      Damage: string
-      StartUpFrame: string
-      BlockFrame: string
-      HitFrame: string
-      CounterHitFrame: string
-      Notes: string }
+    Row of {| Command: string
+              HitLevel: string
+              Damage: string
+              StartUpFrame: string
+              BlockFrame: string
+              HitFrame: string
+              CounterHitFrame: string
+              Notes: string |}
 
-type DbRow = { Id: string
-               CharacterName: string
-               Command: string
-               HitLevel: string
-               Damage: string
-               StartUpFrame: string
-               BlockFrame: string
-               HitFrame: string
-               CounterHitFrame: string
-               Notes: string }
+type DbRow = DbRow of {| Id: string
+                         CharacterName: string
+                         Command: string
+                         HitLevel: string
+                         Damage: string
+                         TotalDamage: int option
+                         StartUpFrame: string
+                         BlockFrame: string
+                         HitFrame: string
+                         CounterHitFrame: string
+                         Notes: string |}
 
 type Table = Table of Row list
 
