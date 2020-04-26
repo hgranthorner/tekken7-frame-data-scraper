@@ -9,8 +9,11 @@ open Xunit
 [<Fact>]
 let ``Can get moves from sql db`` () =
     use cnxn = Db.createConnection()
-    let moves = Db.getMoves cnxn
-    let x = Seq.toList moves
+    let x = Db.getMoves cnxn
+    do if Seq.length x = 0 then failwith "Please run db creation script." else ()
+    x
+    |> Seq.take 1
+    |> Seq.toList |> ignore
     Assert.True(true)
     
 [<Theory>]
@@ -24,5 +27,19 @@ let ``String removeTrailingChar works`` char str expected =
     
 [<Fact>]
 let ``Test directory`` () =
-    Console.WriteLine Directory.GetCurrentDirectory
+    let x = Directory.GetCurrentDirectory()
+    let y = Directory.GetParent x
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
+         |> Directory.GetParent
+         |> fun x -> x.Name
     Assert.True true
