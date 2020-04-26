@@ -79,13 +79,6 @@ let damageToTotalDamage (DbRow row): DbRow =
                    |> Seq.fold (+) 0
                    |> Some |}
 
-// Range Regex: ([0-9]+)~([0-9]+)
-// Options:
-// 1. No numbers - 0, 0
-// 2. Single number n - n, n
-// 3. Two numbers a, b - a, b
-// Probs want Regex.Match
-
 let maxMatch (coll: MatchCollection) =
     query {
         for m in coll do
@@ -119,8 +112,8 @@ let parseEarliestAndLatestFrames (FrameString frame) (minimumValue: MinimumValue
 
 let getEarliestAndLatestFrames (DbRow row): DbRow =
     let (eStartup, lStartup) = parseEarliestAndLatestFrames row.StartUpFrame MinimumValue.Ten 
-    let (eHit, lHit) = parseEarliestAndLatestFrames row.HitFrame MinimumValue.Any
-    let (eBlock, lBlock) = parseEarliestAndLatestFrames row.BlockFrame MinimumValue.Any
+    let (eHit, lHit)         = parseEarliestAndLatestFrames row.HitFrame MinimumValue.Any
+    let (eBlock, lBlock)     = parseEarliestAndLatestFrames row.BlockFrame MinimumValue.Any
     let (eCounter, lCounter) = parseEarliestAndLatestFrames row.CounterHitFrame MinimumValue.Any
     DbRow
         {| row with

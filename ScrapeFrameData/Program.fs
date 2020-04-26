@@ -37,6 +37,13 @@ let createDb () =
         |> List.map Transform.parseTable
         |> List.map (Db.insertData characterName cnxn)
         |> fun _ -> sprintf "Finished downloading data for %s." characterName |> Console.WriteLine) characterNames
+    
+    let cnxn = Db.createConnection()
+    Db.getMoves cnxn
+    |> Seq.map Transform.damageToTotalDamage
+    |> Seq.map Transform.getEarliestAndLatestFrames
+    |> Seq.iter (Db.updateData cnxn)
+    |> fun _ -> Console.WriteLine "Finished updating data."
 
 [<EntryPoint>]
 let main argv =

@@ -124,3 +124,31 @@ let insertData characterName (cnxn: SQLiteConnection) (Table xs) =
         command)
     |> List.iter (fun (x: SQLiteCommand) -> x.ExecuteNonQuery() |> ignore)
     cnxn.Close()
+
+let updateData (cnxn: SQLiteConnection) (DbRow row) =
+    let nullZero x =
+        if Option.isNone x then 0 else x.Value
+
+    let sql =
+        (sprintf """
+    update Moves
+    set TotalDamage = %d,
+        EarliestStartUpFrame = %d,
+        LatestStartUpFrame = %d,
+        EarliestBlockFrame = %d,
+        LatestBlockFrame = %d,
+        EarliestHitFrame = %d,
+        LatestHitFrame = %d,
+        EarliestCounterHitFrame = %d,
+        LatestCounterHitFrame = %d
+    where id = '%s'
+    """   (nullZero row.TotalDamage) (nullZero row.EarliestStartUpFrame) (nullZero row.LatestStartUpFrame)
+             (nullZero row.EarliestBlockFrame) (nullZero row.LatestBlockFrame) (nullZero row.EarliestHitFrame)
+             (nullZero row.LatestHitFrame) (nullZero row.EarliestCounterHitFrame) (nullZero row.LatestCounterHitFrame)
+             (row.Id))
+
+    cnxn.Open()
+    let command = cnxn.CreateCommand()
+    command.CommandText <- sql
+    command.ExecuteNonQuery() |> ignore
+    cnxn.Close()
