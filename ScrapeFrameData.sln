@@ -6,6 +6,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Core", "Scrape.Core\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.Tests", "Scrape.Tests\Scrape.Tests.fsproj", "{AB09F69B-DA3A-4532-8388-201E52D6C2E9}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Scrape.API", "Scrape.API\Scrape.API.fsproj", "{CF11C5DE-AE49-497F-831C-664E1EB54A6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB09F69B-DA3A-4532-8388-201E52D6C2E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF11C5DE-AE49-497F-831C-664E1EB54A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF11C5DE-AE49-497F-831C-664E1EB54A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF11C5DE-AE49-497F-831C-664E1EB54A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF11C5DE-AE49-497F-831C-664E1EB54A6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
