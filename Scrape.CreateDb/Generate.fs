@@ -1,4 +1,6 @@
-﻿open System
+﻿module Scrape.CreateDb.Generate
+
+open System
 open System.Net
 open System.Net.Http
 open Scrape.Core
@@ -44,7 +46,7 @@ let createDb () =
     |> Seq.iter (Db.updateData cnxn)
     |> fun _ -> Console.WriteLine "Finished updating data."
 
-[<EntryPoint>]
-let main argv =
-    createDb()
-    0 // return an integer exit code
+//[<EntryPoint>]
+//let main argv =
+//    createDb()
+//    0 // return an integer exit code

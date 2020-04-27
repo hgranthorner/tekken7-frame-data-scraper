@@ -8,6 +8,7 @@
         <Compile Include="WeatherForecast.fs" />
         <Compile Include="Controllers\MovesController.fs" />
         <Compile Include="Controllers\CharactersController.fs" />
+        <Compile Include="Controllers\DbController.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
         <Content Include="tekkenclient\public\logo192.png" />
