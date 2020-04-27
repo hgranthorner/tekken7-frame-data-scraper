@@ -128,3 +128,48 @@ let getEarliestAndLatestFrames (DbRow row): DbRow =
                LatestHitFrame = lHit
                EarliestCounterHitFrame = eCounter
                LatestCounterHitFrame = lCounter |}
+
+let rowToDto (DbRow row) =
+    {| Id = row.Id
+       CharacterName = row.CharacterName
+       Command = row.Command
+       HitLevel = row.HitLevel
+       Damage = row.Damage
+       TotalDamage = row.TotalDamage
+       StartUpFrame = row.StartUpFrame |> fun (FrameString x) -> x
+       BlockFrame = row.BlockFrame |> fun (FrameString x) -> x
+       HitFrame = row.HitFrame |> fun (FrameString x) -> x
+       CounterHitFrame = row.CounterHitFrame |> fun (FrameString x) -> x
+       Notes = row.Notes
+       EarliestStartUpFrame =
+           row.EarliestStartUpFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       LatestStartUpFrame =
+           row.LatestStartUpFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       EarliestBlockFrame =
+           row.EarliestBlockFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       LatestBlockFrame =
+           row.LatestBlockFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       EarliestHitFrame =
+           row.EarliestHitFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       LatestHitFrame =
+           row.LatestHitFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       EarliestCounterHitFrame =
+           row.EarliestCounterHitFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0
+       LatestCounterHitFrame =
+           row.LatestCounterHitFrame
+           |> fun x ->
+               if x.IsSome then x.Value else 0 |}

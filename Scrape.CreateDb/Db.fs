@@ -152,3 +152,7 @@ let updateData (cnxn: SQLiteConnection) (DbRow row) =
     command.CommandText <- sql
     command.ExecuteNonQuery() |> ignore
     cnxn.Close()
+
+let moves () =
+    createConnection()
+    |> getMoves
