@@ -10,6 +10,21 @@
         <Compile Include="Controllers\CharactersController.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="tekkenclient\public\logo192.png" />
+        <Content Include="tekkenclient\public\robots.txt" />
+        <Content Include="tekkenclient\public\logo512.png" />
+        <Content Include="tekkenclient\public\index.html" />
+        <Content Include="tekkenclient\public\favicon.ico" />
+        <Content Include="tekkenclient\README.md" />
+        <Content Include="tekkenclient\src\App.js" />
+        <Content Include="tekkenclient\src\logo.svg" />
+        <Content Include="tekkenclient\src\setupTests.js" />
+        <Content Include="tekkenclient\src\serviceWorker.js" />
+        <Content Include="tekkenclient\src\App.test.js" />
+        <Content Include="tekkenclient\src\index.css" />
+        <Content Include="tekkenclient\src\index.js" />
+        <Content Include="tekkenclient\src\App.css" />
+        <Content Include="tekkenclient\yarn.lock" />
     </ItemGroup>
 
     <ItemGroup>
@@ -22,6 +37,11 @@
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.3" />
+      <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.3" />
     </ItemGroup>
 
 </Project>
