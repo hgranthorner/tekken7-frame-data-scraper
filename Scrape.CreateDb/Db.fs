@@ -17,7 +17,7 @@ let resolutionPath = "/Users/grant/Dev/fsharp/ScrapeFrameData/ScrapeFrameData/sq
 let connectionString = "Data Source=/Users/grant/Dev/fsharp/ScrapeFrameData/data.db;Version=3;"
 
 [<Literal>]
-let resolutionPath = Directory.GetCurrentDirectory()
+let resolutionPath = ""
 #endif
 
 let createConnection = fun () -> new SQLiteConnection(connectionString)

@@ -23,5 +23,3 @@ type MovesController () =
         |> Db.getMoves
         |> Seq.filter (fun (DbRow move) -> move.CharacterName.ToLower() = character.ToLower())
         |> Seq.map Transform.rowToDto
-
-

@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <Compile Include="WeatherForecast.fs" />
-        <Compile Include="Controllers/WeatherForecastController.fs" />
         <Compile Include="Controllers\MovesController.fs" />
         <Compile Include="Controllers\CharactersController.fs" />
         <Compile Include="Startup.fs" />
@@ -16,6 +15,13 @@
     <ItemGroup>
       <ProjectReference Include="..\Scrape.Core\Scrape.Core.fsproj" />
       <ProjectReference Include="..\Scrape.CreateDb\Scrape.CreateDb.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="wwwroot\index.html">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

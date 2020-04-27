@@ -26,6 +26,9 @@ type Startup private () =
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
+            
+        app.UseDefaultFiles() |> ignore
+        app.UseStaticFiles() |> ignore
 
         app.UseHttpsRedirection() |> ignore
         app.UseRouting() |> ignore
